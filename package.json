@@ -7,7 +7,8 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "react-devtools": "react-devtools"
   },
   "repository": {
     "type": "git",
@@ -37,7 +38,8 @@
     "react-native-screens": "~3.4.0"
   },
   "devDependencies": {
-    "babel-preset-expo": "8.3.0"
+    "babel-preset-expo": "8.3.0",
+    "react-devtools": "^4.14.0"
   },
   "keywords": [
     "argon react native",
