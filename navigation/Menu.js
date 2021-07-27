@@ -14,6 +14,7 @@ function CustomDrawerContent({ drawerPosition, navigation, profile, focused, sta
     "Home", 
     "Profile",
     "Account",
+    "Login",
     "Elements",
     "Articles",
   ];
