@@ -1,7 +1,7 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Image } from "react-native";
 import AppLoading from "expo-app-loading";
-import { useFonts } from '@use-expo/font';
+import { useFonts } from "@use-expo/font";
 import { Asset } from "expo-asset";
 import { Block, GalioProvider } from "galio-framework";
 import { NavigationContainer } from "@react-navigation/native";
@@ -15,7 +15,9 @@ import Screens from "./navigation/Screens";
 import { Images, articles, argonTheme } from "./constants";
 //import { Login } from "./screens/Login";
 
-// cache app images
+import { Provider } from "react-redux";
+import { store } from "./redux/store.js";
+
 const assetImages = [
   Images.Onboarding,
   Images.LogoOnboarding,
@@ -23,14 +25,14 @@ const assetImages = [
   Images.Pro,
   Images.ArgonLogo,
   Images.iOSLogo,
-  Images.androidLogo
+  Images.androidLogo,
 ];
 
 // cache product images
-articles.map(article => assetImages.push(article.image));
+articles.map((article) => assetImages.push(article.image));
 
 function cacheImages(images) {
-  return images.map(image => {
+  return images.map((image) => {
     if (typeof image === "string") {
       return Image.prefetch(image);
     } else {
@@ -39,10 +41,10 @@ function cacheImages(images) {
   });
 }
 
-export default props => {
+export default (props) => {
   const [isLoadingComplete, setLoading] = useState(false);
   let [fontsLoaded] = useFonts({
-    'ArgonExtra': require('./assets/font/argon.ttf'),
+    ArgonExtra: require("./assets/font/argon.ttf"),
   });
 
   function _loadResourcesAsync() {
@@ -53,13 +55,13 @@ export default props => {
     // In this case, you might want to report the error to your error
     // reporting service, for example Sentry
     console.warn(error);
-  };
+  }
 
- function _handleFinishLoading() {
+  function _handleFinishLoading() {
     setLoading(true);
-  };
+  }
 
-  if(!fontsLoaded && !isLoadingComplete) {
+  if (!fontsLoaded && !isLoadingComplete) {
     return (
       <AppLoading
         startAsync={_loadResourcesAsync}
@@ -67,21 +69,23 @@ export default props => {
         onFinish={_handleFinishLoading}
       />
     );
-  } else if(fontsLoaded) {
+  } else if (fontsLoaded) {
     return (
-      <NavigationContainer>
-        <GalioProvider theme={argonTheme}>
-          <Block flex>
-            <Screens />
-          </Block>
-        </GalioProvider>
-      </NavigationContainer>
+      <Provider store={store}>
+        <NavigationContainer>
+          <GalioProvider theme={argonTheme}>
+            <Block flex>
+              <Screens />
+            </Block>
+          </GalioProvider>
+        </NavigationContainer>
+      </Provider>
     );
   } else {
-    return null
+    return null;
   }
-}
-////////
+};
+
 // export default class App extends React.Component {
 //   state = {
 //     isLoadingComplete: false

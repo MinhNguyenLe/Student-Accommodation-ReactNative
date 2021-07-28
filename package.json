@@ -7,7 +7,8 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "react-devtools": "react-devtools"
   },
   "repository": {
     "type": "git",
@@ -21,11 +22,13 @@
     "@react-navigation/native": "5.9.3",
     "@react-navigation/stack": "5.14.3",
     "@use-expo/font": "^2.0.0",
+    "axios": "^0.21.1",
     "expo": "^42.0.0",
     "expo-app-loading": "^1.0.1",
     "expo-asset": "~8.3.2",
     "expo-font": "~9.2.1",
     "galio-framework": "^0.8.0",
+    "jquery": "^3.6.0",
     "prop-types": "^15.7.2",
     "react": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
@@ -35,10 +38,16 @@
     "react-native-modal-dropdown": "git+https://github.com/siemiatj/react-native-modal-dropdown.git",
     "react-native-reanimated": "~2.2.0",
     "react-native-safe-area-context": "3.2.0",
-    "react-native-screens": "~3.4.0"
+    "react-native-screens": "~3.4.0",
+    "react-redux": "^7.2.4",
+    "redux": "^4.1.0",
+    "redux-logger": "^3.0.6",
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
-    "babel-preset-expo": "8.3.0"
+    "babel-preset-expo": "8.3.0",
+    "react-devtools": "^4.14.0"
   },
   "keywords": [
     "argon react native",
