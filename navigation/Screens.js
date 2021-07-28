@@ -15,6 +15,8 @@ import Profile from "../screens/Profile";
 import Register from "../screens/Register";
 import Elements from "../screens/Elements";
 import Articles from "../screens/Articles";
+import ReviewPage from "../screens/ReviewPage";
+import ProfilePage from "../screens/ProfilePage";
 // drawer
 import CustomDrawerContent from "./Menu";
 
@@ -38,10 +40,10 @@ function ElementsStack(props) {
           header: ({ navigation, scene }) => (
             <Header title="Elements" navigation={navigation} scene={scene} />
           ),
-          cardStyle: { backgroundColor: "#F8F9FE" }
+          cardStyle: { backgroundColor: "#F8F9FE" },
         }}
       />
-            <Stack.Screen
+      <Stack.Screen
         name="Pro"
         component={Pro}
         options={{
@@ -55,7 +57,82 @@ function ElementsStack(props) {
               scene={scene}
             />
           ),
-          headerTransparent: true
+          headerTransparent: true,
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+function ReviewPageStack(props) {
+  return (
+    <Stack.Navigator mode="card" headerMode="screen">
+      <Stack.Screen
+        name="Articles"
+        component={ReviewPage}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="Articles" navigation={navigation} scene={scene} />
+          ),
+          cardStyle: { backgroundColor: "#F8F9FE" },
+        }}
+      />
+      <Stack.Screen
+        name="Pro"
+        component={Pro}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title=""
+              back
+              white
+              transparent
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          headerTransparent: true,
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+function ProfilePageStack(props) {
+  return (
+    <Stack.Navigator initialRouteName="Profile" mode="card" headerMode="screen">
+      <Stack.Screen
+        name="Profile"
+        component={ProfilePage}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              transparent
+              white
+              title="Profile"
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          cardStyle: { backgroundColor: "#FFFFFF" },
+          headerTransparent: true,
+        }}
+      />
+      <Stack.Screen
+        name="Pro"
+        component={Pro}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title=""
+              back
+              white
+              transparent
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          headerTransparent: true,
         }}
       />
     </Stack.Navigator>
@@ -72,10 +149,10 @@ function ArticlesStack(props) {
           header: ({ navigation, scene }) => (
             <Header title="Articles" navigation={navigation} scene={scene} />
           ),
-          cardStyle: { backgroundColor: "#F8F9FE" }
+          cardStyle: { backgroundColor: "#F8F9FE" },
         }}
       />
-            <Stack.Screen
+      <Stack.Screen
         name="Pro"
         component={Pro}
         options={{
@@ -89,7 +166,7 @@ function ArticlesStack(props) {
               scene={scene}
             />
           ),
-          headerTransparent: true
+          headerTransparent: true,
         }}
       />
     </Stack.Navigator>
@@ -113,10 +190,10 @@ function ProfileStack(props) {
             />
           ),
           cardStyle: { backgroundColor: "#FFFFFF" },
-          headerTransparent: true
+          headerTransparent: true,
         }}
       />
-            <Stack.Screen
+      <Stack.Screen
         name="Pro"
         component={Pro}
         options={{
@@ -130,7 +207,7 @@ function ProfileStack(props) {
               scene={scene}
             />
           ),
-          headerTransparent: true
+          headerTransparent: true,
         }}
       />
     </Stack.Navigator>
@@ -153,7 +230,7 @@ function HomeStack(props) {
               scene={scene}
             />
           ),
-          cardStyle: { backgroundColor: "#F8F9FE" }
+          cardStyle: { backgroundColor: "#F8F9FE" },
         }}
       />
       <Stack.Screen
@@ -170,7 +247,7 @@ function HomeStack(props) {
               scene={scene}
             />
           ),
-          headerTransparent: true
+          headerTransparent: true,
         }}
       />
     </Stack.Navigator>
@@ -184,7 +261,7 @@ export default function OnboardingStack(props) {
         name="Onboarding"
         component={Onboarding}
         option={{
-          headerTransparent: true
+          headerTransparent: true,
         }}
       />
       <Stack.Screen name="App" component={AppStack} />
@@ -196,10 +273,10 @@ function AppStack(props) {
   return (
     <Drawer.Navigator
       style={{ flex: 1 }}
-      drawerContent={props => <CustomDrawerContent {...props} />}
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
       drawerStyle={{
         backgroundColor: "white",
-        width: width * 0.8
+        width: width * 0.8,
       }}
       drawerContentOptions={{
         activeTintcolor: "white",
@@ -213,13 +290,13 @@ function AppStack(props) {
           justifyContent: "center",
           alignContent: "center",
           alignItems: "center",
-          overflow: "hidden"
+          overflow: "hidden",
         },
         labelStyle: {
           fontSize: 18,
           marginLeft: 12,
-          fontWeight: "normal"
-        }
+          fontWeight: "normal",
+        },
       }}
       initialRouteName="Home"
     >
@@ -228,7 +305,8 @@ function AppStack(props) {
       <Drawer.Screen name="Account" component={Register} />
       <Drawer.Screen name="Elements" component={ElementsStack} />
       <Drawer.Screen name="Articles" component={ArticlesStack} />
+      <Drawer.Screen name="ReviewPage" component={ReviewPageStack} />
+      <Drawer.Screen name="ProfilePage" component={ProfilePageStack} />
     </Drawer.Navigator>
   );
 }
-
