@@ -14,8 +14,7 @@ import Screens from "./navigation/Screens";
 import { Images, articles, argonTheme } from "./constants";
 
 import { Provider } from "react-redux";
-import { PersistGate } from "redux-persist/integration/react";
-import { store, persistor } from "./redux/store.js";
+import { store } from "./redux/store.js";
 
 const assetImages = [
   Images.Onboarding,
@@ -71,15 +70,13 @@ export default (props) => {
   } else if (fontsLoaded) {
     return (
       <Provider store={store}>
-        <PersistGate loading="null" persistor={persistor}>
-          <NavigationContainer>
-            <GalioProvider theme={argonTheme}>
-              <Block flex>
-                <Screens />
-              </Block>
-            </GalioProvider>
-          </NavigationContainer>
-        </PersistGate>
+        <NavigationContainer>
+          <GalioProvider theme={argonTheme}>
+            <Block flex>
+              <Screens />
+            </Block>
+          </GalioProvider>
+        </NavigationContainer>
       </Provider>
     );
   } else {

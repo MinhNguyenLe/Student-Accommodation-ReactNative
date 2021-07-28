@@ -1,24 +1,35 @@
-import storage from "redux-persist/lib/storage";
-import { persistReducer } from "redux-persist";
-
-const persistConfig = {
-  key: "root",
-  storage,
-  whitelist: ["user"],
-};
-
 const INITIAL_STATE = {
-  user: {},
+  user: {
+    id: "",
+    email: "",
+    name: "",
+    age: "",
+    job: "",
+    avatar: "",
+    phone: "",
+    isAdmin: "",
+    coverImage: "",
+  },
 };
 function reducer(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case "SET-ID-SCHOOL":
+    case "SET-USER":
       return {
         ...state,
-        idSchool: action.payload.id,
+        user: {
+          id: action.payload.user.id,
+          email: action.payload.user.email,
+          name: action.payload.user.name,
+          age: action.payload.user.age,
+          job: action.payload.user.job,
+          avatar: action.payload.user.avatar || "",
+          phone: action.payload.user.phone,
+          isAdmin: action.payload.user.isAdmin,
+          coverImage: action.payload.user.coverImage || "",
+        },
       };
     default:
       return state;
   }
 }
-export default persistReducer(persistConfig, reducer);
+export default reducer;

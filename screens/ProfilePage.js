@@ -15,18 +15,25 @@ import { HeaderHeight } from "../constants/utils";
 
 import port from "../integrate/portAPI.js";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+import * as action from "../redux/actions.js";
 
 const { width, height } = Dimensions.get("screen");
 
 const thumbMeasure = (width - 48 - 32) / 3;
 
 const ProfilePage = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+
   useEffect(async () => {
     try {
-      const resp = await axios.get("http://192.168.1.105:5555/api/reviews");
-      console.log(resp.data);
+      const userAPI = await axios.get(
+        "http://192.168.1.105:5555/api/users/leminh@gmail.com"
+      );
+      dispatch(action.setUser(userAPI.data.user));
+      console.warn(userAPI.data.user);
     } catch (err) {
-      // Handle Error Here
       console.error(err);
     }
   }, []);
@@ -125,7 +132,7 @@ const ProfilePage = () => {
               <Block flex>
                 <Block middle style={styles.nameInfo}>
                   <Text bold size={28} color="#32325D">
-                    Jessica Jones, 27
+                    {user.name || "minh"}, {user.age || "21"}
                   </Text>
                   <Text size={16} color="#32325D" style={{ marginTop: 10 }}>
                     San Francisco, USA
