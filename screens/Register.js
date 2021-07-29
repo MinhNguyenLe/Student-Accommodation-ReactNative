@@ -153,8 +153,8 @@ class Register extends React.Component {
               </Block>
             </Block>
           </Block>
-        </ImageBackground>
-      </Block>
+          </ImageBackground>
+        </Block>
     );
   }
 }

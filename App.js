@@ -5,6 +5,7 @@ import { useFonts } from "@use-expo/font";
 import { Asset } from "expo-asset";
 import { Block, GalioProvider } from "galio-framework";
 import { NavigationContainer } from "@react-navigation/native";
+import Login from "./screens/Login";
 
 // Before rendering any navigation stack
 import { enableScreens } from "react-native-screens";
@@ -12,6 +13,7 @@ enableScreens();
 
 import Screens from "./navigation/Screens";
 import { Images, articles, argonTheme } from "./constants";
+//import { Login } from "./screens/Login";
 
 import { Provider } from "react-redux";
 import { store } from "./redux/store.js";
@@ -124,4 +126,11 @@ export default (props) => {
 //   _handleFinishLoading = () => {
 //     this.setState({ isLoadingComplete: true });
 //   };
+// }
+
+//Login test
+// export default function App () {
+//   return (
+//     <Login/>
+//   )
 // }
