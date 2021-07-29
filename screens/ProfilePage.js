@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
+  View,
+  TextInput,
   StyleSheet,
   Dimensions,
   ScrollView,
   Image,
   ImageBackground,
   Platform,
+  ActivityIndicator,
 } from "react-native";
 import { Block, Text, theme } from "galio-framework";
 
@@ -18,6 +21,13 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import * as action from "../redux/actions.js";
 
+// import {
+//   CirclesLoader,
+//   PulseLoader,
+//   TextLoader,
+//   DotsLoader,
+// } from "react-native-indicator";
+
 const { width, height } = Dimensions.get("screen");
 
 const thumbMeasure = (width - 48 - 32) / 3;
@@ -26,17 +36,48 @@ const ProfilePage = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
 
-  useEffect(async () => {
-    try {
+  const [name, setName] = useState();
+  const [age, setAge] = useState();
+  const [job, setJob] = useState();
+  const [phone, setPhone] = useState();
+
+  const [isChange, setIsChange] = useState(false);
+
+  useEffect(() => {
+    async function fetchData() {
       const userAPI = await axios.get(
-        "http://192.168.1.105:5555/api/users/leminh@gmail.com"
+        `${port.ip_minh}/api/users/leminh@gmail.com`
       );
       dispatch(action.setUser(userAPI.data.user));
-      console.warn(userAPI.data.user);
-    } catch (err) {
-      console.error(err);
+      setPhone(userAPI.data.user.phone);
+      setName(userAPI.data.user.name);
+      setJob(userAPI.data.user.job);
+      setAge(userAPI.data.user.age.toString());
     }
+    fetchData();
   }, []);
+
+  const changeInfo = async () => {
+    console.log(user);
+    if (isChange) {
+      const change = await axios.post(`${port.ip_minh}/api/users/change-info`, {
+        id: user.id,
+        name: name,
+        phone: parseInt(phone),
+        job: job,
+        age: parseInt(age),
+      });
+      dispatch(
+        action.updateUser({
+          name: name,
+          age: parseInt(age),
+          job: job,
+          phone: phone,
+        })
+      );
+    }
+    setIsChange(!isChange);
+  };
 
   return (
     <Block flex style={styles.profile}>
@@ -77,6 +118,7 @@ const ProfilePage = () => {
                     CHANGE AVATAR
                   </Button>
                   <Button
+                    onPress={changeInfo}
                     small
                     style={{
                       padding: 10,
@@ -84,7 +126,22 @@ const ProfilePage = () => {
                       backgroundColor: argonTheme.COLORS.DEFAULT,
                     }}
                   >
-                    CHANGE INFORMATION
+                    <Text
+                      flex
+                      row
+                      style={{
+                        color: "#fff",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {!isChange ? "CHANGE INFORMATION" : "SAVE"}
+                      {isChange ? (
+                        <ActivityIndicator size="small" color="#fff" />
+                      ) : (
+                        ""
+                      )}
+                    </Text>
                   </Button>
                 </Block>
                 <Block row space="between">
@@ -131,12 +188,89 @@ const ProfilePage = () => {
               </Block>
               <Block flex>
                 <Block middle style={styles.nameInfo}>
-                  <Text bold size={28} color="#32325D">
-                    {user.name || "minh"}, {user.age || "21"}
-                  </Text>
-                  <Text size={16} color="#32325D" style={{ marginTop: 10 }}>
-                    San Francisco, USA
-                  </Text>
+                  <Block
+                    row
+                    flex
+                    style={{ alignItems: "center", marginTop: 10 }}
+                  >
+                    <TextInput
+                      value={name}
+                      style={{
+                        color: "#32325D",
+                        width: "auto",
+                        borderColor: isChange ? "#999" : "#fff",
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        paddingVertical: 4,
+                        paddingHorizontal: 10,
+                        fontSize: 30,
+                        fontWeight: "bold",
+                      }}
+                      maxLength={30}
+                      editable={isChange ? true : false}
+                      onChangeText={(val) => {
+                        setName(val);
+                      }}
+                      autoCapitalize="none"
+                    />
+                    <Text
+                      style={{
+                        color: "#32325D",
+                        fontSize: 30,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      ,
+                    </Text>
+                    <TextInput
+                      value={age}
+                      style={{
+                        color: "#32325D",
+                        width: "auto",
+                        borderColor: isChange ? "#999" : "#fff",
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        paddingVertical: 4,
+                        paddingHorizontal: 10,
+                        fontSize: 30,
+                        fontWeight: "bold",
+                      }}
+                      maxLength={2}
+                      editable={isChange ? true : false}
+                      onChangeText={(val) => {
+                        setAge(val);
+                      }}
+                      autoCapitalize="none"
+                    />
+                  </Block>
+                  <Block
+                    row
+                    flex
+                    style={{ alignItems: "center", marginTop: 10 }}
+                  >
+                    <Text row size={18} color="#32325D">
+                      My phone number :
+                    </Text>
+                    <TextInput
+                      value={phone}
+                      style={{
+                        color: "#32325D",
+                        width: "auto",
+                        borderColor: isChange ? "#999" : "#fff",
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        paddingVertical: 4,
+                        paddingHorizontal: 10,
+                        fontSize: 18,
+                      }}
+                      maxLength={16}
+                      editable={isChange ? true : false}
+                      onChangeText={(val) => {
+                        setPhone(val);
+                      }}
+                      autoCapitalize="none"
+                    />
+                  </Block>
                 </Block>
                 <Block middle style={{ marginTop: 30, marginBottom: 16 }}>
                   <Block style={styles.divider} />
@@ -147,9 +281,27 @@ const ProfilePage = () => {
                     color="#525F7F"
                     style={{ textAlign: "center" }}
                   >
-                    An artist of considerable range, Jessica name taken by
-                    Melbourne …
+                    Information :
                   </Text>
+                  <TextInput
+                    value={job}
+                    style={{
+                      color: "#32325D",
+                      width: "auto",
+                      borderColor: isChange ? "#999" : "#fff",
+                      borderWidth: 1,
+                      borderRadius: 4,
+                      paddingVertical: 4,
+                      paddingHorizontal: 10,
+                      fontSize: 18,
+                    }}
+                    maxLength={48}
+                    editable={isChange ? true : false}
+                    onChangeText={(val) => {
+                      setJob(val);
+                    }}
+                    autoCapitalize="none"
+                  />
                   <Button
                     style={{
                       color: "#233DD2",
@@ -197,122 +349,6 @@ const ProfilePage = () => {
           </ScrollView>
         </ImageBackground>
       </Block>
-      {/* <ScrollView showsVerticalScrollIndicator={false} 
-                    contentContainerStyle={{ flex: 1, width, height, zIndex: 9000, backgroundColor: 'red' }}>
-        <Block flex style={styles.profileCard}>
-          <Block middle style={styles.avatarContainer}>
-            <Image
-              source={{ uri: Images.ProfilePicture }}
-              style={styles.avatar}
-            />
-          </Block>
-          <Block style={styles.info}>
-            <Block
-              middle
-              row
-              space="evenly"
-              style={{ marginTop: 20, paddingBottom: 24 }}
-            >
-              <Button small style={{ backgroundColor: argonTheme.COLORS.INFO }}>
-                CONNECT
-              </Button>
-              <Button
-                small
-                style={{ backgroundColor: argonTheme.COLORS.DEFAULT }}
-              >
-                MESSAGE
-              </Button>
-            </Block>
-
-            <Block row space="between">
-              <Block middle>
-                <Text
-                  bold
-                  size={12}
-                  color="#525F7F"
-                  style={{ marginBottom: 4 }}
-                >
-                  2K
-                </Text>
-                <Text size={12}>Orders</Text>
-              </Block>
-              <Block middle>
-                <Text bold size={12} style={{ marginBottom: 4 }}>
-                  10
-                </Text>
-                <Text size={12}>Photos</Text>
-              </Block>
-              <Block middle>
-                <Text bold size={12} style={{ marginBottom: 4 }}>
-                  89
-                </Text>
-                <Text size={12}>Comments</Text>
-              </Block>
-            </Block>
-          </Block>
-          <Block flex>
-              <Block middle style={styles.nameInfo}>
-                <Text bold size={28} color="#32325D">
-                  Jessica Jones, 27
-                </Text>
-                <Text size={16} color="#32325D" style={{ marginTop: 10 }}>
-                  San Francisco, USA
-                </Text>
-              </Block>
-              <Block middle style={{ marginTop: 30, marginBottom: 16 }}>
-                <Block style={styles.divider} />
-              </Block>
-              <Block middle>
-                <Text size={16} color="#525F7F" style={{ textAlign: "center" }}>
-                  An artist of considerable range, Jessica name taken by
-                  Melbourne …
-                </Text>
-                <Button
-                  color="transparent"
-                  textStyle={{
-                    color: "#233DD2",
-                    fontWeight: "500",
-                    fontSize: 16
-                  }}
-                >
-                  Show more
-                </Button>
-              </Block>
-              <Block
-                row
-                style={{ paddingVertical: 14, alignItems: "baseline" }}
-              >
-                <Text bold size={16} color="#525F7F">
-                  Album
-                </Text>
-              </Block>
-              <Block
-                row
-                style={{ paddingBottom: 20, justifyContent: "flex-end" }}
-              >
-                <Button
-                  small
-                  color="transparent"
-                  textStyle={{ color: "#5E72E4", fontSize: 12 }}
-                >
-                  View all
-                </Button>
-              </Block>
-              <Block style={{ paddingBottom: -HeaderHeight * 2 }}>
-                <Block row space="between" style={{ flexWrap: "wrap" }}>
-                  {Images.Viewed.map((img, imgIndex) => (
-                    <Image
-                      source={{ uri: img }}
-                      key={`viewed-${img}`}
-                      resizeMode="cover"
-                      style={styles.thumb}
-                    />
-                  ))}
-                </Block>
-              </Block>
-          </Block>
-        </Block>
-                  </ScrollView>*/}
     </Block>
   );
 };

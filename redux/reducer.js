@@ -28,6 +28,16 @@ function reducer(state = INITIAL_STATE, action) {
           coverImage: action.payload.user.coverImage || "",
         },
       };
+    case "UPDATE-USER":
+      return {
+        ...state,
+        user: {
+          name: action.payload.user.name,
+          age: action.payload.user.age,
+          job: action.payload.user.job,
+          phone: action.payload.user.phone,
+        },
+      };
     default:
       return state;
   }
