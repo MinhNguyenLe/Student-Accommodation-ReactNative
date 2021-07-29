@@ -16,3 +16,17 @@ export const setUser = (user) => {
     },
   };
 };
+
+export const updateUser = (user) => {
+  return {
+    type: "UPDATE-USER",
+    payload: {
+      user: {
+        name: user.name,
+        age: user.age,
+        job: user.job,
+        phone: user.phone,
+      },
+    },
+  };
+};
